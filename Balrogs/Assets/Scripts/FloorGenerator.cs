@@ -97,37 +97,41 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomBottom(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterBottom" + ChooseQuarterDifficulty();
+        string prefabName = "QuarterBottom";
         if (room.HasExitDown)
         {
+            prefabName += ChooseQuarterDifficulty();
             prefabName += "Door";
         }
-        GameObject roomBottom = Instantiate(Resources.Load(SRC_BOTTOM + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
-        
-        int randomSelector = randomGenerator.Next(0, 2);
-        if (randomSelector == 1)
+        else
         {
-            //Effet mirroir
-            //roomBottom.transform.localScale = new Vector3(roomBottom.transform.localScale.x, roomBottom.transform.localScale.y * -1, roomBottom.transform.localScale.z);
+            int randomSelector = randomGenerator.Next(0, 2);
+            if (randomSelector == 1)
+            {
+                prefabName += ChooseQuarterDifficulty();
+            }
+            else
+            {
+                prefabName += "Small";
+            }
         }
+        GameObject roomBottom = Instantiate(Resources.Load(SRC_BOTTOM + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomBottom.transform.parent = gameGrid.transform;
     }
 
     private void AddRoomTop(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterTop" + ChooseQuarterDifficulty();
-        if (room.HasExitUp)
-        {
-            prefabName += "Door";
-        }
-        GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
-
+        string prefabName = "QuarterTop";
         int randomSelector = randomGenerator.Next(0, 2);
         if (randomSelector == 1)
         {
-            //Effet mirroir
-            //roomTop.transform.localScale = new Vector3(roomTop.transform.localScale.x, roomTop.transform.localScale.y * -1, roomTop.transform.localScale.z);
+            prefabName += "Smaller";
         }
+        prefabName += ChooseQuarterDifficulty();
+        if (room.HasExitUp)
+            prefabName += "Door";
+
+        GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomTop.transform.parent = gameGrid.transform;
     }
     

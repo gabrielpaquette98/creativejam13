@@ -9,12 +9,12 @@ public enum GameDifficulty
 
 public class GameRules : MonoBehaviour
 {
-    public GameDifficulty Difficulty { get; private set; } = GameDifficulty.LOW;
+    public static GameDifficulty Difficulty { get; set; }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        Difficulty = GameDifficulty.MEDIUM;
     }
 
     // Update is called once per frame
