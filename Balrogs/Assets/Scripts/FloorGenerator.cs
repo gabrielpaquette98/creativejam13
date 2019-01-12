@@ -9,9 +9,16 @@ public class FloorGenerator : MonoBehaviour
 {
     const int GRID_WIDTH = 25;
     const int GRID_HEIGHT = 14;
-    const string srcTop = "Prefabs/Maps/Top/";
-    const string srcBottom = "Prefabs/Maps/Bottom/";
-    const string srcSide = "Prefabs/Maps/Side/";
+    const string SRC_TOP = "Prefabs/Maps/Top/";
+    const string SRC_BOTTOM = "Prefabs/Maps/Bottom/";
+    const string SRC_SIDE = "Prefabs/Maps/Side/";
+
+    const string EASY = "Ez";
+    const string MEDIUM = "Medium";
+    const string HARD = "Hard";
+
+    string difficulty = MEDIUM;
+
     System.Random randomGenerator = new System.Random();
 
     //Modifiy accordingly for difficulty or time purposes
@@ -66,49 +73,67 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomRight(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "SideMedium";
+        //string quarterDifficulty = ChooseQuarterDifficulty();
+        string prefabName = "Side" + difficulty;
         if (room.HasExitRight)
         {
             prefabName += "Door";
         }
-        GameObject roomRight = Instantiate(Resources.Load(srcSide + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        GameObject roomRight = Instantiate(Resources.Load(SRC_SIDE + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomRight.transform.localScale = new Vector3(roomRight.transform.localScale.x * -1, roomRight.transform.localScale.y, roomRight.transform.localScale.z);
         roomRight.transform.parent = gameGrid.transform;
         roomRight.transform.position = new Vector3(roomRight.transform.position.x - 1, roomRight.transform.position.y, roomRight.transform.position.z);
     }
 
+
     private void AddRoomLeft(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "SideMedium";
+        string prefabName = "Side" + difficulty;
         if (room.HasExitLeft)
         {
             prefabName += "Door";
         }
-        GameObject roomLeft = Instantiate(Resources.Load(srcSide + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        GameObject roomLeft = Instantiate(Resources.Load(SRC_SIDE + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomLeft.transform.parent = gameGrid.transform;
     }
 
     private void AddRoomBottom(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterBottomMed";
+        string prefabName = "QuarterBottom" + difficulty;
         if (room.HasExitDown)
         {
             prefabName += "Door";
         }
-        GameObject roomBottom = Instantiate(Resources.Load(srcBottom + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        GameObject roomBottom = Instantiate(Resources.Load(SRC_BOTTOM + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomBottom.transform.parent = gameGrid.transform;
     }
 
     private void AddRoomTop(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterTopMedium";
+        string prefabName = "QuarterTop" + difficulty;
         if (room.HasExitUp)
         {
             prefabName += "Door";
         }
-        GameObject roomTop = Instantiate(Resources.Load(srcTop + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomTop.transform.parent = gameGrid.transform;
     }
+    /*
+    private string ChooseQuarterDifficulty()
+    {
+        switch (GameRules.Difficulty)
+        {
+            case GameDifficulty.LOW:
+                break;
+            case GameDifficulty.MEDIUM:
+                break;
+            case GameDifficulty.HIGH:
+                break;
+            default:
+                break;
+        }
+    }*/
+
 
     private Vector2Int GenerateRandomPosition(int xMax, int yMax)
     {
