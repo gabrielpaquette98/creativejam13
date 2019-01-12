@@ -12,30 +12,42 @@ public class Room
     RoomType CurrentRoomType { get; set; }
     bool[] ExitDirections { get; set; }
 
+    public bool HasExitUp { get; set; }
+    public bool HasExitRight { get; set; }
+    public bool HasExitDown { get; set; }
+    public bool HasExitLeft { get; set; }
+
+
+
     public Room(Vector2Int position, RoomType roomType) {
         GridPosition = position;
         CurrentRoomType = roomType;
-    }
+
+        HasExitUp = false;
+        HasExitDown = false; 
+        HasExitLeft = false;
+        HasExitRight = false;
+}
     public List<Vector2Int> GetNeighboors()
     {
         return GetNeighboors(GridPosition);
     }
-    public List<Vector2Int> GetNeighboors(Vector2Int roomPosition)
+    public static List<Vector2Int> GetNeighboors(Vector2Int roomPosition)
     {
         List<Vector2Int> neighboors = new List<Vector2Int>();
-        if (GridPosition.x > 0)
+        if (roomPosition.x > 0)
         {
             neighboors.Add(new Vector2Int(roomPosition.x - 1, roomPosition.y));
         }
-        if (GridPosition.y > 0)
+        if (roomPosition.y > 0)
         {
             neighboors.Add(new Vector2Int(roomPosition.x, roomPosition.y - 1));
         }
-        if (GridPosition.x < 7)
+        if (roomPosition.x < 7)
         {
             neighboors.Add(new Vector2Int(roomPosition.x + 1, roomPosition.y));
         }
-        if (GridPosition.y < 7)
+        if (roomPosition.y < 7)
         {
             neighboors.Add(new Vector2Int(roomPosition.x, roomPosition.y + 1));
         }

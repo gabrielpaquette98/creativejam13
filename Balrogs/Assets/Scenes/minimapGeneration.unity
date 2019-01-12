@@ -143,7 +143,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   roomGridXLength: 8
   roomGridYLength: 8
-  nbOfRooms: 15
+  nbOfRooms: 64
   roomRenderer: {fileID: 796095111498739049, guid: 6668ae5205119984c9ad4ced73a6c1e5,
     type: 3}
 --- !u!4 &90227651
@@ -236,7 +236,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1694188188}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -10}
+  m_LocalPosition: {x: 0.75, y: 0.3, z: -10}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
