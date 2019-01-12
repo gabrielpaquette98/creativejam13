@@ -15,7 +15,6 @@ public class RoomSpriteSelector : MonoBehaviour
     public void setRoom(Room room)
     {
         renderedRoom = room;
-        //Start();
     }
     
     void Start()
@@ -62,9 +61,5 @@ public class RoomSpriteSelector : MonoBehaviour
             layerRend = layers[3].GetComponent<SpriteRenderer>();
             layerRend.enabled = false;
         }
-    }
-    private void LateUpdate()
-    {
-        PickSprite();
     }
 }
