@@ -7,13 +7,16 @@ public class ThrowRock : MonoBehaviour
     private Rigidbody2D rigidBody;
     private GameObject player;
     private float speed;
+    private float lifeTime;
 
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
+        rigidBody.drag = 1;
         player = GameObject.Find("Player");
         speed = 10f;
         ShootRock();
+        lifeTime = 10f;
     }
 
     private void ShootRock()
@@ -28,7 +31,8 @@ public class ThrowRock : MonoBehaviour
     {
         if (!(other.gameObject.CompareTag("Player")))
         {
-            Destroy(gameObject);
+            gameObject.tag = "Rock";
+            Destroy(gameObject, lifeTime);
         }
     }
 }
