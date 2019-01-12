@@ -16,8 +16,7 @@ public class FloorGenerator : MonoBehaviour
     const string EASY = "Ez";
     const string MEDIUM = "Medium";
     const string HARD = "Hard";
-
-    string difficulty = MEDIUM;
+    string difficulty;
 
     System.Random randomGenerator = new System.Random();
 
@@ -73,8 +72,7 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomRight(Room room, Vector2 gridRoomPosition)
     {
-        //string quarterDifficulty = ChooseQuarterDifficulty();
-        string prefabName = "Side" + difficulty;
+        string prefabName = "Side" + ChooseQuarterDifficulty();
         if (room.HasExitRight)
         {
             prefabName += "Door";
@@ -88,7 +86,7 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomLeft(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "Side" + difficulty;
+        string prefabName = "Side" + ChooseQuarterDifficulty();
         if (room.HasExitLeft)
         {
             prefabName += "Door";
@@ -99,7 +97,7 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomBottom(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterBottom" + difficulty;
+        string prefabName = "QuarterBottom" + ChooseQuarterDifficulty();
         if (room.HasExitDown)
         {
             prefabName += "Door";
@@ -110,7 +108,7 @@ public class FloorGenerator : MonoBehaviour
 
     private void AddRoomTop(Room room, Vector2 gridRoomPosition)
     {
-        string prefabName = "QuarterTop" + difficulty;
+        string prefabName = "QuarterTop" + ChooseQuarterDifficulty();
         if (room.HasExitUp)
         {
             prefabName += "Door";
@@ -118,21 +116,38 @@ public class FloorGenerator : MonoBehaviour
         GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomTop.transform.parent = gameGrid.transform;
     }
-    /*
+    
     private string ChooseQuarterDifficulty()
     {
+        int randomSelector = randomGenerator.Next(0, 2);
         switch (GameRules.Difficulty)
         {
             case GameDifficulty.LOW:
+                if (randomSelector < 2)
+                    return EASY;
+                else
+                    return MEDIUM;
                 break;
             case GameDifficulty.MEDIUM:
+                if (randomSelector == 0)
+                    return EASY;
+                if (randomSelector == 1)
+                    return MEDIUM;
+                if (randomSelector == 2)
+                    return HARD;
                 break;
             case GameDifficulty.HIGH:
+                if (randomSelector < 2)
+                    return HARD;
+                else
+                    return MEDIUM;
                 break;
             default:
+                return MEDIUM;
                 break;
         }
-    }*/
+        return MEDIUM;
+    }
 
 
     private Vector2Int GenerateRandomPosition(int xMax, int yMax)
