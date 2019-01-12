@@ -12,7 +12,8 @@ public class Player : MonoBehaviour
     private float vertical;
     private float limit;
     private float speed;
-    private int rockCount;
+    public int rockCount;
+    bool hasCollided = false;
 
     void Start()
     {
@@ -37,11 +38,12 @@ public class Player : MonoBehaviour
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if (other.gameObject.CompareTag("Rock"))
+        if (!hasCollided && other.gameObject.CompareTag("Rock"))
         {
+            hasCollided = true;
             rockCount++;
             other.gameObject.SetActive(false);
-        }
+        } else if (hasCollided) { hasCollided = false; }
     }
 
     private void ThrowRock()
