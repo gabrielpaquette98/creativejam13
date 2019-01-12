@@ -103,6 +103,13 @@ public class FloorGenerator : MonoBehaviour
             prefabName += "Door";
         }
         GameObject roomBottom = Instantiate(Resources.Load(SRC_BOTTOM + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        
+        int randomSelector = randomGenerator.Next(0, 2);
+        if (randomSelector == 1)
+        {
+            //Effet mirroir
+            //roomBottom.transform.localScale = new Vector3(roomBottom.transform.localScale.x, roomBottom.transform.localScale.y * -1, roomBottom.transform.localScale.z);
+        }
         roomBottom.transform.parent = gameGrid.transform;
     }
 
@@ -114,16 +121,24 @@ public class FloorGenerator : MonoBehaviour
             prefabName += "Door";
         }
         GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+
+        int randomSelector = randomGenerator.Next(0, 2);
+        if (randomSelector == 1)
+        {
+            //Effet mirroir
+            //roomTop.transform.localScale = new Vector3(roomTop.transform.localScale.x, roomTop.transform.localScale.y * -1, roomTop.transform.localScale.z);
+        }
         roomTop.transform.parent = gameGrid.transform;
     }
     
     private string ChooseQuarterDifficulty()
     {
-        int randomSelector = randomGenerator.Next(0, 2);
+        int randomSelector = randomGenerator.Next(0, 3);
+        Debug.Log(randomSelector);
         switch (GameRules.Difficulty)
         {
             case GameDifficulty.LOW:
-                if (randomSelector < 2)
+                if (randomSelector <= 1)
                     return EASY;
                 else
                     return MEDIUM;
@@ -137,10 +152,7 @@ public class FloorGenerator : MonoBehaviour
                     return HARD;
                 break;
             case GameDifficulty.HIGH:
-                if (randomSelector < 2)
                     return HARD;
-                else
-                    return MEDIUM;
                 break;
             default:
                 return MEDIUM;
