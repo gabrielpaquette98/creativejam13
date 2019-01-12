@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Object = UnityEngine.Object;
 
 public class FloorGenerator : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class FloorGenerator : MonoBehaviour
     [SerializeField] int roomGridXLength = 8;
     [SerializeField] int roomGridYLength = 8;
     [SerializeField] int nbOfRooms = 15;
+    [SerializeField] RoomSpriteSelector roomRenderer;
     public Room[,] Rooms { get; set; }
     Vector2 FloorSize;
 
@@ -19,8 +21,10 @@ public class FloorGenerator : MonoBehaviour
     void Start()
     {
         FloorSize = new Vector2(roomGridXLength, roomGridYLength);
+        nextNeighboors = new List<Vector2Int>();
+        occupiedRoomPosition = new List<Vector2Int>();
         CreateRooms();
-        SetDoorTypes();
+        //SetDoorTypes();
         MiniMapDraw();
     }
     private Vector2Int GenerateRandomPosition(int xMax, int yMax)
@@ -51,25 +55,37 @@ public class FloorGenerator : MonoBehaviour
 
         for (int i = 0; i < nbOfRooms - 1; i++)
         {
-            currentRoomPosition = nextNeighboors[randomGenerator.Next(nextNeighboors.Count)];
+            currentRoomPosition = ChooseNextRoom();
+            Debug.Log(currentRoomPosition);
             occupiedRoomPosition.Add(currentRoomPosition);
             CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_NORMAL_ROOM);
             nextNeighboors.Remove(currentRoomPosition);
             AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
         }
-
-
     }
 
+    Vector2Int ChooseNextRoom()
+    {
 
+        return nextNeighboors[randomGenerator.Next(nextNeighboors.Count)];
+    }
 
-    private void SetDoorTypes()
+    void SetDoorTypes()
     {
         throw new NotImplementedException();
     }
-    private void MiniMapDraw()
+    void MiniMapDraw()
     {
-        throw new NotImplementedException();
+        foreach (Room room in Rooms)
+        {
+            if (room != null)
+            {
+                Vector2 drawPosition = room.GridPosition;
+                drawPosition.x /= 6;
+                drawPosition.y /= 12;
+                Instantiate(roomRenderer, drawPosition, Quaternion.identity);
+            }
+        }
     }
 
 
