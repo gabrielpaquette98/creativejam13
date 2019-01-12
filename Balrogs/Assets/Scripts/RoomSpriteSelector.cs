@@ -6,31 +6,60 @@ using UnityEngine;
 public class RoomSpriteSelector : MonoBehaviour
 {
     [SerializeField] Sprite defaultRoom;
+
     [SerializeField] Color normalColor;
     [SerializeField] Color spawnColor;
 
-    SpriteRenderer rend;
-    // Start is called before the first frame update
+    SpriteRenderer roomSpriteRend;
+    Room renderedRoom;
+    public void setRoom(Room room)
+    {
+        renderedRoom = room;
+    }
+    
     void Start()
     {
-        rend = GetComponent<SpriteRenderer>();
+        roomSpriteRend = GetComponent<SpriteRenderer>();
         PickSprite();
         PickColor();
     }
 
     void PickColor()
     {
-        rend.color = normalColor;
+        roomSpriteRend.color = normalColor;
     }
 
     void PickSprite()
     {
-        rend.sprite = defaultRoom;
-    }
+        roomSpriteRend.sprite = defaultRoom;
+        SpriteRenderer layerRend;
+        List<GameObject> layers = new List<GameObject>();
 
-    // Update is called once per frame
-    void Update()
-    {
+
+        for (int i = 0; i < 4; i++)
+        {
+            layers.Add(transform.GetChild(i).gameObject);
+        }
         
+        if (!renderedRoom.HasExitUp)
+        {
+            layerRend = layers[0].GetComponent<SpriteRenderer>();
+            layerRend.enabled = false;
+        }
+        if (!renderedRoom.HasExitRight)
+        {
+            layerRend = layers[1].GetComponent<SpriteRenderer>();
+            layerRend.enabled = false;
+        }
+        if (!renderedRoom.HasExitDown)
+        {
+            layerRend = layers[2].GetComponent<SpriteRenderer>();
+            layerRend.enabled = false;
+        }
+        if (!renderedRoom.HasExitLeft)
+        {
+            layerRend = layers[3].GetComponent<SpriteRenderer>();
+            layerRend.enabled = false;
+        }
     }
 }
