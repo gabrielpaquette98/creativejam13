@@ -6,7 +6,7 @@ public class Player : MonoBehaviour
 {
     const float PLAYER_SPEED = 2f;
     private float speed;
-    private Vector2 direction;
+    public Vector2 direction;
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +29,7 @@ public class Player : MonoBehaviour
         direction = Vector2.zero;
         if (Input.GetKey(KeyCode.W)) {
             direction += Vector2.up;
+            
         } 
         if (Input.GetKey(KeyCode.S)) {
             direction += Vector2.down;
@@ -39,8 +40,13 @@ public class Player : MonoBehaviour
         if (Input.GetKey(KeyCode.D)) {
             direction += Vector2.right;
         } 
-        if (Input.GetKey(KeyCode.Space)) {    
-            // Throws rock?
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.gameObject.CompareTag("Rock"))
+        {
+            other.gameObject.SetActive(false);
         }
     }
 }
