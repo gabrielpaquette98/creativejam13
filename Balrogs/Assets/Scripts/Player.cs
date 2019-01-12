@@ -4,49 +4,52 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    const float PLAYER_SPEED = 2f;
-    private float speed;
-    public Vector2 direction;
+    public GameObject rock;
+    public Transform throwPoint;
 
-    // Start is called before the first frame update
+    private Rigidbody2D rigidBody;
+    private float horizontal;
+    private float vertical;
+    private float limit;
+    private float speed;
+    private int rockCount;
+
     void Start()
     {
-        speed = PLAYER_SPEED;
+        rigidBody = GetComponent<Rigidbody2D>();
+        limit = 0.5f;
+        speed = 5f;
+        rockCount = 0;
     }
 
-    // Update is called once per frame
+    void Update()
+    {
+        horizontal = Input.GetAxisRaw("Horizontal");
+        vertical = Input.GetAxisRaw("Vertical");
+        ThrowRock();
+    }
+
     void FixedUpdate()
     {
-        GetKeyboardInput();
-        Move();
+        rigidBody.velocity = (horizontal != 0 && vertical != 0) ? new Vector2((horizontal * speed) * limit, (vertical * speed) * limit) :
+                                                                  new Vector2(horizontal * speed, vertical * speed);
     }
 
-    public void Move() {
-        transform.Translate(direction * speed * Time.deltaTime);
-    }
-
-    public void GetKeyboardInput() {
-        direction = Vector2.zero;
-        if (Input.GetKey(KeyCode.W)) {
-            direction += Vector2.up;
-            
-        } 
-        if (Input.GetKey(KeyCode.S)) {
-            direction += Vector2.down;
-        } 
-        if (Input.GetKey(KeyCode.A)) {
-            direction += Vector2.left;
-        } 
-        if (Input.GetKey(KeyCode.D)) {
-            direction += Vector2.right;
-        } 
-    }
-
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.gameObject.CompareTag("Rock"))
+        if (other.gameObject.CompareTag("Rock"))
         {
+            rockCount++;
             other.gameObject.SetActive(false);
+        }
+    }
+
+    private void ThrowRock()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && rockCount != 0)
+        {
+            Instantiate(rock, throwPoint.position, throwPoint.rotation);
+            rockCount--;
         }
     }
 }
