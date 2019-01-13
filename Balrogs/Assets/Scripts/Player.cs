@@ -1,11 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    //public GameObject rock;
-    //public Transform throwPoint;
+    public GameObject rock;
+    public Transform throwPoint;
+    public Text rockCountUI;
     
     const string PoolKey = "RockShot.prefab";
     [SerializeField] GameObject prefab;
@@ -46,6 +48,7 @@ public class Player : MonoBehaviour
         limit = 0.8f;
         speed = 5f;
         rockCount = 0;
+        UpdateRockCountUI();
         
         if (GameObjectPoolController.AddEntry(PoolKey, prefab, 10, 15))
             Debug.Log("Pre-populating pool");
@@ -84,10 +87,15 @@ public class Player : MonoBehaviour
         {
             hasCollided = true;
             rockCount++;
+            UpdateRockCountUI();
             other.gameObject.SetActive(false);
         } else if (hasCollided) { hasCollided = false; }
     }
 
+    private void UpdateRockCountUI()
+    {
+        rockCountUI.text = "x  " + rockCount;
+    }
     private void ThrowRock()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && rockCount != 0)
@@ -100,6 +108,7 @@ public class Player : MonoBehaviour
             instances.Add(obj);
             
             rockCount--;
+            UpdateRockCountUI();
         }
     }
 }
