@@ -32,6 +32,11 @@ public class ThrowRock : Poolable
     private void OnCollisionEnter(Collision other)
     {
         inpact.Play();
+        if (!(other.gameObject.CompareTag("Player")))
+        {
+            gameObject.tag = "Rock";
+            this.enabled = false;
+        }
     }
 
     public void ShootRock()

@@ -51,6 +51,9 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        coinCountUI = GameObject.FindGameObjectWithTag("CoinCount").GetComponent<Text>();
+        rockCountUI = GameObject.FindGameObjectWithTag("RockCount").GetComponent<Text>();
+
         rigidBody = GetComponent<Rigidbody2D>();
         limit = 0.8f;
         speed = 5f;
@@ -128,9 +131,9 @@ public class Player : MonoBehaviour
         rockCountUI.text = "x  " + rockCount;
     }
 
-    private void UpdateCoinCountUI()
+    public void UpdateCoinCountUI()
     {
-        coinCountUI.text = "x  " + (coinCount * 100);
+        coinCountUI.text = "x  " + (Coins * 100);
     }
 
     private void ThrowRock()

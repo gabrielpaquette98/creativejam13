@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  m_AmbientSkyColor: {r: 0.011764706, g: 0.011764706, b: 0.011764706, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -88,7 +88,8 @@ LightmapSettings:
     m_PVRFilteringAtrousPositionSigmaIndirect: 2
     m_PVRFilteringAtrousPositionSigmaAO: 1
     m_ShowResolutionOverlay: 1
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: 9df6f1c4cf9eada419d51b3be4b1e8f6,
+    type: 2}
   m_UseShadowmask: 1
 --- !u!196 &4
 NavMeshSettings:
@@ -443,13 +444,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   initialDifficulty: 0
-  easyRoomCount: 7
+  easyRoomCount: 10
   easyMaxOrcCountPerLevel: 4
   easyMaxOrcCountPerRoom: 1
-  mediumRoomCount: 13
+  mediumRoomCount: 15
   mediumMaxOrcCountPerLevel: 10
   mediumMaxOrcCountPerRoom: 2
-  hardRoomCount: 17
+  hardRoomCount: 20
   hardMaxOrcCountPerLevel: 20
   hardMaxOrcCountPerRoom: 3
   ennemiesGeneration: 1
@@ -5698,6 +5699,95 @@ Transform:
   m_Father: {fileID: 67562056}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1001 &1839347454
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5100320034045555820, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_Name
+      value: GameUI
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -47.48538
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 19.923748
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 9.522417
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4916164237375019113, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2555490533120990670, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 668149561863881564, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3263045976345538116, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_TagString
+      value: CoinCount
+      objectReference: {fileID: 0}
+    - target: {fileID: 7617601730626179715, guid: d20b544a8e01eca4cbf2680bec381fc5,
+        type: 3}
+      propertyPath: m_TagString
+      value: RockCount
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d20b544a8e01eca4cbf2680bec381fc5, type: 3}
 --- !u!1 &1854294778
 GameObject:
   m_ObjectHideFlags: 0
