@@ -11,7 +11,7 @@ public class GameRules : MonoBehaviour
 {
     System.Random randomGenerator = new System.Random();
     public static GameDifficulty Difficulty { get; set; }
-    public int PointsGathered { get => pointsGathered; set => pointsGathered = value; }
+    public float PointsGathered { get => pointsGathered; set => pointsGathered = value; }
 
     [SerializeField] private GameDifficulty initialDifficulty = GameDifficulty.LOW;
     //[SerializeField] int initialDifficulty = 1;
@@ -32,8 +32,8 @@ public class GameRules : MonoBehaviour
     [SerializeField] int roomGridSize = 8;
     const int DEFAULT_ROOM_COUNT = 10;
 
-    private int pointsGathered = 0;
-    public int pointsWhenStartingAFloor = 0;
+    private float pointsGathered = 0;
+    public float pointsWhenStartingAFloor = 0;
 
     void Start()
     {
@@ -46,7 +46,7 @@ public class GameRules : MonoBehaviour
         //Quand le joueur entre en collision avec un tilemap collider de tag "Exit", on sort du niveau pour en faire un nouveau
         //A la génération de terrain, le joueur doit apparaitre au spawn point du prefab de tag Spawn pour le premier niveau, Entry pour les autres levels suivants
         //On doit lier les entrées et sorties (warp zones?)
-        
+
     }
     public int GetRoomCount()
     {
@@ -66,9 +66,9 @@ public class GameRules : MonoBehaviour
         switch (Difficulty)
         {
             case GameDifficulty.LOW:
-                return randomGenerator.Next(easyMaxOrcCountPerLevel-1, easyMaxOrcCountPerLevel+1);
+                return randomGenerator.Next(easyMaxOrcCountPerLevel - 1, easyMaxOrcCountPerLevel + 1);
             case GameDifficulty.MEDIUM:
-                return randomGenerator.Next(mediumMaxOrcCountPerLevel-2, mediumMaxOrcCountPerLevel+1);
+                return randomGenerator.Next(mediumMaxOrcCountPerLevel - 2, mediumMaxOrcCountPerLevel + 1);
             case GameDifficulty.HIGH:
                 return randomGenerator.Next(hardMaxOrcCountPerLevel - 3, hardMaxOrcCountPerLevel + 1);
         }

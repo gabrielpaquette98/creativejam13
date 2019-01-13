@@ -15,6 +15,7 @@ public class Coins : Poolable
         //Debug.Log(gameObject.tag);
         if (other.gameObject.tag.Equals("Player"))
         {
+            GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered += 0.15f;
             other.gameObject.GetComponent<Player>().Coins++;
             other.gameObject.GetComponent<Player>().UpdateCoinCountUI();
             GetComponent<AudioSource>().Play();
