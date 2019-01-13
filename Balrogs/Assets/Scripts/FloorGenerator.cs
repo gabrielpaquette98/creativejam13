@@ -40,7 +40,7 @@ public class FloorGenerator : MonoBehaviour
     List<Vector2Int> nextNeighboors;
     
     public GameObject player;
-    [SerializeField] GameObject ennemyPrefab;
+    //[SerializeField] GameObject ennemyPrefab;
 
     public bool firstTime = true;
     int numberOfEnnemiesSpawned = 0;
@@ -64,7 +64,7 @@ public class FloorGenerator : MonoBehaviour
             if (terrainGenerationIsEnabled)
                 InitializePlayableRooms();
             if (Rules.GetEnnemiesGeneration())
-                SprinkleEnnemiesInLevel();
+                
             Rules.pointsWhenStartingAFloor = Rules.PointsGathered;
         }
         
@@ -105,49 +105,10 @@ public class FloorGenerator : MonoBehaviour
         
     }
 
-    private void SprinkleEnnemiesInLevel()
-    {
-        Vector2Int roomPosition;
-        maxNumberOfEnnemies = Rules.GetRandomOrcCountPerLevel();
-        List<Vector2Int> roomsToSprinkle = new List<Vector2Int>();
-        foreach (var room in occupiedRoomPosition)
-        {
-            if (Rooms[room.x, room.y] != null && Rooms[room.x, room.y].CurrentRoomType != RoomType.SPAWN_ROOM)
-                roomsToSprinkle.Add(room);
-        }
-        do
-        {
-            
-            roomPosition = roomsToSprinkle[randomGenerator.Next(0, roomsToSprinkle.Count)];
-            SprinkleEnnemiesInRoom(roomPosition);
-            roomsToSprinkle.Remove(roomPosition);
-        } while (numberOfEnnemiesSpawned < maxNumberOfEnnemies && roomsToSprinkle.Count > 0);
+ 
 
-    }
-
-    private void SprinkleEnnemiesInRoom(Vector2Int roomPosition)
-    {
-        int amountOfEnnemiesToSpawn = Rules.GetRandomOrcCountPerRoom();
-        if (numberOfEnnemiesSpawned + amountOfEnnemiesToSpawn > maxNumberOfEnnemies)
-        {
-            amountOfEnnemiesToSpawn = maxNumberOfEnnemies - numberOfEnnemiesSpawned;
-        }
-        for (int i = 0; i < amountOfEnnemiesToSpawn; i++)
-        {
-            SpawnEnnemy(roomPosition);
-        }
-    }
-
-    void SpawnEnnemy(Vector2 roomPosition)
-    {
-        Vector2 spawnPosition = new Vector2(roomPosition.x * GRID_WIDTH, roomPosition.y * GRID_HEIGHT);
-        GameObject ennemy = Instantiate(ennemyPrefab, spawnPosition, Quaternion.identity);
-
-        //set path
-        Orc orc = ennemy.GetComponent<Orc>();
-        orc.initialisePath(spawnPosition);
-        numberOfEnnemiesSpawned++;
-    }
+   
+    
 
     private void AddRoomRight(Room room, Vector2 gridRoomPosition)
     {

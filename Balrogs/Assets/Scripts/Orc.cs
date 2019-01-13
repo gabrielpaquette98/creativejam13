@@ -50,7 +50,7 @@ public class Orc : MonoBehaviour
     void Start()
     {
         StartCoroutine(patrolSound());
-        path = GameObject.FindGameObjectsWithTag("path");
+        //path = GameObject.FindGameObjectsWithTag("path");
         //Path = new List<GameObject>();
         //thisPos = transform.position;
         target = transform.position;
@@ -217,44 +217,6 @@ public class Orc : MonoBehaviour
         //If something was hit, the RaycastHit2D.collider will not be null.
         playerFound(hit, dirr);
     }
-
-    IEnumerator canGetPath()
-    {
-        int timer = 0;
-        int max = 3;
-        for(; ; )
-        {
-
-            yield return new WaitForSeconds(1);
-            timer++;
-            if (timer > max)
-            {
-                timer = 0;
-                initialisePath(transform.position);
-            }
-        }
-    }
-
-    internal void initialisePath(Vector2 spawnPosition)
-    {
-        System.Random randomGenerator = new System.Random();
-        int nbOfPoints = randomGenerator.Next(2, 4);
-        int deltaX;
-        int deltaY;
-        for (int i = 0; i < nbOfPoints; i++)
-        {
-            GameObject dest = new GameObject();
-            do
-            {
-                deltaX = randomGenerator.Next(3, 6);
-                deltaY = randomGenerator.Next(3, 6);
-                dest.transform.position = new Vector2(spawnPosition.x + deltaX, spawnPosition.y + deltaY);
-            } while (pointsTaken.Contains(dest.transform.position));
-            pointsTaken.Add(dest.transform.position);
-            Path.Add(dest);
-        }
-    }
-
 
     // Update is called once per frame
     void Update()

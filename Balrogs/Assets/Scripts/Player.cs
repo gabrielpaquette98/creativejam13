@@ -143,6 +143,7 @@ public class Player : MonoBehaviour
             obj.transform.position = transform.position;
             obj.gameObject.SetActive(true);
             instances.Add(obj);
+            obj.GetComponent<ThrowRock>().ShootRock();
             
             rockCount--;
             UpdateRockCountUI();

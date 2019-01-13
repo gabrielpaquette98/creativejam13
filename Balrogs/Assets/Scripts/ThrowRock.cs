@@ -10,6 +10,13 @@ public class ThrowRock : Poolable
     private float speed;
     private float lifeTime;
     public AudioSource inpact, shoot;
+    private bool thrownByPlayer = false;
+
+    public bool ThrownByPlayer
+    {
+        get => thrownByPlayer;
+        set => thrownByPlayer = value;
+    }
 
     void OnEnable()
     {
@@ -17,7 +24,7 @@ public class ThrowRock : Poolable
         //rigidBody.drag = 1;
         player = GameObject.Find("Player");
         //speed = 15f;
-        ShootRock();
+        
         lifeTime = 10f;
         //Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     }
@@ -27,7 +34,7 @@ public class ThrowRock : Poolable
         inpact.Play();
     }
 
-    private void ShootRock()
+    public void ShootRock()
     {
         Vector2 playerPosition = Camera.main.WorldToScreenPoint(transform.position);
         Vector3 mousePosition = Input.mousePosition;
@@ -38,13 +45,13 @@ public class ThrowRock : Poolable
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!(other.gameObject.CompareTag("Player")) && !(other.gameObject.CompareTag("RockShot"))) {
+        if (!(other.gameObject.CompareTag("Player"))) {
             gameObject.tag = "Rock";
             this.enabled = false;
         }
         else
         {
-            this.GetComponents<Collider2D>()[1].isTrigger = false;
+            this.GetComponents<Collider2D>()[0].isTrigger = false;
         }
     }
 }

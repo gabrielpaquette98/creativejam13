@@ -25,7 +25,7 @@ public class Coins : Poolable
 
     IEnumerator disableCoin()
     {
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.07f);
         gameObject.active = false;
     }
 
