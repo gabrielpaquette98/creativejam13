@@ -8,6 +8,11 @@ public class Player : MonoBehaviour
     public GameObject rock;
     public Transform throwPoint;
     public Text rockCountUI;
+    
+    const string PoolKey = "RockShot.prefab";
+    [SerializeField] GameObject prefab;
+    List<Poolable> instances = new List<Poolable>();
+
     private Rigidbody2D rigidBody;
     private float horizontal;
     private float vertical;
@@ -16,6 +21,15 @@ public class Player : MonoBehaviour
     public int rockCount;
     bool hasCollided = false;
 
+    [SerializeField]
+    private bool illuminated = false;
+
+    public bool Illuminated
+    {
+        get { return illuminated; }
+        set { illuminated = value; }
+    }
+
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -23,6 +37,11 @@ public class Player : MonoBehaviour
         speed = 5f;
         rockCount = 0;
         UpdateRockCountUI();
+        
+        if (GameObjectPoolController.AddEntry(PoolKey, prefab, 10, 15))
+            Debug.Log("Pre-populating pool");
+        else
+            Debug.Log("Pool already configured");
     }
 
     void Update()
@@ -34,8 +53,15 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        rigidBody.velocity = (horizontal != 0 && vertical != 0) ? new Vector2((horizontal * speed) * limit, (vertical * speed) * limit) :
-                                                                  new Vector2(horizontal * speed, vertical * speed);
+        if (horizontal > 0)
+        {
+            transform.localScale = new Vector3(1,1,1);
+        }
+        else if (horizontal < 0)
+        {
+            transform.localScale = new Vector3(-1,1,1);
+        }
+        rigidBody.velocity = new Vector2(horizontal * speed, vertical * speed);
     }
 
     void OnTriggerEnter2D(Collider2D other)
@@ -57,7 +83,13 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && rockCount != 0)
         {
-            Instantiate(rock, throwPoint.position, throwPoint.rotation);
+            //Instantiate(rock, throwPoint.position, throwPoint.rotation);
+            
+            Poolable obj = GameObjectPoolController.Dequeue(PoolKey);
+            obj.transform.position = transform.position;
+            obj.gameObject.SetActive(true);
+            instances.Add(obj);
+            
             rockCount--;
             UpdateRockCountUI();
         }

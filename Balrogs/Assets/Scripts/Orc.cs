@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -8,6 +9,14 @@ public class Orc : MonoBehaviour
 {
     [SerializeField]
     private GameObject[] path;
+
+    public GameObject[] Path
+    {
+        get { return path; }
+        set { path = value; }
+    }
+
+    
 
     [SerializeField]
     private Vector3 target;
@@ -25,6 +34,9 @@ public class Orc : MonoBehaviour
     private float timer = 0.0f;
     
     enum States {LOOKING, CHASING, PARTOL, STUN}
+
+    [SerializeField]
+    private Animator anim;
 
     [SerializeField]
     private States state = States.PARTOL;
@@ -81,12 +93,15 @@ public class Orc : MonoBehaviour
             Debug.Log(hit.collider.tag);
             if (hit.collider.tag.Equals("Player"))
             {
-                //target = hit.collider.transform.position;
-                speed *= 2;
+                if (hit.collider.GetComponent<Player>().Illuminated)
+                {
+                    //target = hit.collider.transform.position;
+                    speed *= 2;
 
-                state = States.CHASING;
-                StopAllCoroutines();
-                target = hit.collider.transform.position;
+                    state = States.CHASING;
+                    StopAllCoroutines();
+                    target = hit.collider.transform.position;
+                }
 
             }
             
@@ -132,7 +147,28 @@ public class Orc : MonoBehaviour
 
     }
 
-   
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        Debug.Log(other.gameObject.tag);
+        if (other.gameObject.CompareTag("Rock"))
+        {
+            
+            StopAllCoroutines();
+            state = States.STUN;
+            GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
+            anim.SetBool("Stun", true);
+            StartCoroutine(Stun());
+        }
+    }
+
+    IEnumerator Stun()
+    {
+        yield return new WaitForSeconds(2);
+        anim.SetBool("Stun", false);
+        state = States.LOOKING;
+        StartCoroutine(lookForPlayer());
+    }
+
 
     private void looking()
     {
@@ -150,12 +186,13 @@ public class Orc : MonoBehaviour
             Debug.Log(hit.collider.tag);
             if (hit.collider.tag.Equals("Player"))
             {
-                //target = hit.collider.transform.position;
-                speed *= 2;
-                state = States.CHASING;
-                StopAllCoroutines();
-                target = hit.collider.transform.position;
-
+                if (hit.collider.GetComponent<Player>().Illuminated)
+                {
+                    speed *= 2;
+                    state = States.CHASING;
+                    StopAllCoroutines();
+                    target = hit.collider.transform.position;
+                }
             }
             
         }

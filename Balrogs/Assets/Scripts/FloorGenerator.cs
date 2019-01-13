@@ -7,6 +7,7 @@ using Object = UnityEngine.Object;
 
 public class FloorGenerator : MonoBehaviour
 {
+    static bool firstLevelDone = true;
     const int GRID_WIDTH = 25;
     const int GRID_HEIGHT = 14;
     const string SRC_TOP = "Prefabs/Maps/Top/";
@@ -98,23 +99,31 @@ public class FloorGenerator : MonoBehaviour
     private void AddRoomBottom(Room room, Vector2 gridRoomPosition)
     {
         string prefabName = "QuarterBottom";
-        if (room.HasExitDown)
+        if (room.CurrentRoomType == RoomType.FLOOR_START_ROOM)
         {
-            prefabName += ChooseQuarterDifficulty();
-            prefabName += "Door";
+            prefabName += "Start";
         }
         else
         {
-            int randomSelector = randomGenerator.Next(0, 2);
-            if (randomSelector == 1)
+            if (room.HasExitDown)
             {
                 prefabName += ChooseQuarterDifficulty();
+                prefabName += "Door";
             }
             else
             {
-                prefabName += "Small";
+                int randomSelector = randomGenerator.Next(0, 2);
+                if (randomSelector == 1)
+                {
+                    prefabName += ChooseQuarterDifficulty();
+                }
+                else
+                {
+                    prefabName += "Small";
+                }
             }
         }
+
         GameObject roomBottom = Instantiate(Resources.Load(SRC_BOTTOM + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomBottom.transform.parent = gameGrid.transform;
     }
@@ -122,15 +131,25 @@ public class FloorGenerator : MonoBehaviour
     private void AddRoomTop(Room room, Vector2 gridRoomPosition)
     {
         string prefabName = "QuarterTop";
-        int randomSelector = randomGenerator.Next(0, 2);
-        if (randomSelector == 1)
+        if (room.CurrentRoomType == RoomType.SPAWN_ROOM)
         {
-            prefabName += "Smaller";
+            prefabName += "Spawn";
         }
-        prefabName += ChooseQuarterDifficulty();
-        if (room.HasExitUp)
-            prefabName += "Door";
-
+        else if (room.CurrentRoomType == RoomType.FLOOR_EXIT_ROOM)
+        {
+            prefabName += "Exit";
+        }
+        else
+        {
+            int randomSelector = randomGenerator.Next(0, 2);
+            if (randomSelector == 1)
+            {
+                prefabName += "Smaller";
+            }
+            prefabName += ChooseQuarterDifficulty();
+            if (room.HasExitUp)
+                prefabName += "Door";
+        }
         GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
         roomTop.transform.parent = gameGrid.transform;
     }
@@ -165,11 +184,7 @@ public class FloorGenerator : MonoBehaviour
         return MEDIUM;
     }
 
-
-    private Vector2Int GenerateRandomPosition(int xMax, int yMax)
-    {
-        return new Vector2Int(randomGenerator.Next(0, xMax), randomGenerator.Next(0, yMax));
-    }
+    
     private void AddToSelectableNeighboors(List<Vector2Int> list)
     {
         foreach (Vector2Int roomPosition in list)
@@ -187,26 +202,55 @@ public class FloorGenerator : MonoBehaviour
     private void CreateRooms()
     {
         Rooms = new Room[roomArrayXLength, roomArrayYLength];
-        Vector2Int currentRoomPosition = new Vector2Int(roomArrayXLength/2, roomArrayYLength/2);//GenerateRandomPosition(roomGridXLength, roomGridYLength);
-        CreateSingleRoom(currentRoomPosition, RoomType.SPAWN_ROOM);
-        occupiedRoomPosition.Add(currentRoomPosition);
+        Vector2Int currentRoomPosition = new Vector2Int(roomArrayXLength/2, roomArrayYLength/2);
+        if (!firstLevelDone)
+        {
+            CreateSingleRoom(currentRoomPosition, RoomType.SPAWN_ROOM);
+            firstLevelDone = true;
+            occupiedRoomPosition.Add(new Vector2Int(roomArrayXLength / 2, roomArrayYLength / 2 + 1));
+        }
+        else
+        {
+            CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_START_ROOM);
+            occupiedRoomPosition.Add(new Vector2Int(roomArrayXLength / 2, roomArrayYLength / 2 - 1));
+        }
+        
         AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
+        occupiedRoomPosition.Add(currentRoomPosition);
+        
 
         for (int i = 0; i < nbOfRooms - 1; i++)
         {
-            if (i >= nbOfRooms - nbOfRooms/5)
+            if (i > nbOfRooms - nbOfRooms/5)
             {
                 currentRoomPosition = ChooseNextRoomRandomly();
+                CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_NORMAL_ROOM);
+                occupiedRoomPosition.Add(currentRoomPosition);
+                nextNeighboors.Remove(currentRoomPosition);
+                AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
+            }
+            else if (i == nbOfRooms - nbOfRooms / 5 )
+            {
+                Vector2Int topPosition; 
+                do
+                {
+                    currentRoomPosition = ChooseNextBranchRoom();
+                    topPosition = new Vector2Int(currentRoomPosition.x, currentRoomPosition.y + 1);
+                } while (occupiedRoomPosition.Contains(topPosition));
+                CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_EXIT_ROOM);
+                occupiedRoomPosition.Add(currentRoomPosition);
+                occupiedRoomPosition.Add(new Vector2Int(currentRoomPosition.x, currentRoomPosition.y + 1));
+                nextNeighboors.Remove(currentRoomPosition);
+                AddToSelectableNeighboors(Room.GetNeighboorsButNoTop(currentRoomPosition));
             }
             else
             {
                 currentRoomPosition = ChooseNextBranchRoom();
+                CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_NORMAL_ROOM);
+                occupiedRoomPosition.Add(currentRoomPosition);
+                nextNeighboors.Remove(currentRoomPosition);
+                AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
             }
-            
-            occupiedRoomPosition.Add(currentRoomPosition);
-            CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_NORMAL_ROOM);
-            nextNeighboors.Remove(currentRoomPosition);
-            AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
         }
     }
 
@@ -216,7 +260,8 @@ public class FloorGenerator : MonoBehaviour
         List<Vector2Int> roomsToTry = new List<Vector2Int>();
         foreach (var item in nextNeighboors)
         {
-            roomsToTry.Add(item);
+            if (!occupiedRoomPosition.Contains(item))
+                roomsToTry.Add(item);
         }
         Vector2Int position = new Vector2Int();
         do
@@ -244,6 +289,11 @@ public class FloorGenerator : MonoBehaviour
 
     Vector2Int ChooseNextRoomRandomly()
     {
+        Vector2Int nextPosition = new Vector2Int();
+        do
+        {
+            nextPosition = nextNeighboors[randomGenerator.Next(0, nextNeighboors.Count)];
+        } while (occupiedRoomPosition.Contains(nextPosition));
         return nextNeighboors[randomGenerator.Next(0, nextNeighboors.Count)];
     }
 
@@ -256,21 +306,24 @@ public class FloorGenerator : MonoBehaviour
                 List<Vector2Int> neighboors = MakeListOfOccupiedNeighboors(room.GridPosition);
                 foreach (Vector2Int neighbor in neighboors)
                 {
-                    if (neighbor.y - room.GridPosition.y == -1)
+                    if (Rooms[neighbor.x, neighbor.y] != null)
                     {
-                        room.HasExitDown = true;
-                    }
-                    if (neighbor.x - room.GridPosition.x == 1)
-                    {
-                        room.HasExitRight = true;
-                    }
-                    if (neighbor.y - room.GridPosition.y == 1)
-                    {
-                        room.HasExitUp = true;
-                    }
-                    if (neighbor.x - room.GridPosition.x == -1)
-                    {
-                        room.HasExitLeft = true;
+                        if (Rooms[neighbor.x, neighbor.y].CurrentRoomType != RoomType.SPAWN_ROOM && neighbor.y - room.GridPosition.y == -1)
+                        {
+                            room.HasExitDown = true;
+                        }
+                        if (neighbor.x - room.GridPosition.x == 1)
+                        {
+                            room.HasExitRight = true;
+                        }
+                        if (neighbor.y - room.GridPosition.y == 1 && room.CurrentRoomType != RoomType.SPAWN_ROOM)
+                        {
+                            room.HasExitUp = true;
+                        }
+                        if (neighbor.x - room.GridPosition.x == -1)
+                        {
+                            room.HasExitLeft = true;
+                        }
                     }
                 }
             }
@@ -293,11 +346,5 @@ public class FloorGenerator : MonoBehaviour
         }
     }
 
-
-
-
-    void Update()
-    {
-        
-    }
+    
 }
