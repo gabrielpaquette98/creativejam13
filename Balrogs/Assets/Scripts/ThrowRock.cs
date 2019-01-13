@@ -27,10 +27,9 @@ public class ThrowRock : MonoBehaviour
         rigidBody.AddForce(direction * speed, ForceMode2D.Impulse);
     }
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnTriggerExit2D(Collider2D other)
     {
-        if (!(other.gameObject.CompareTag("Player")))
-        {
+        if (!(other.gameObject.CompareTag("Player")) && !(other.gameObject.CompareTag("RockShot"))) {
             gameObject.tag = "Rock";
             Destroy(gameObject, lifeTime);
         }

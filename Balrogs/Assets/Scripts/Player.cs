@@ -18,7 +18,7 @@ public class Player : MonoBehaviour
     void Start()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        limit = 0.5f;
+        limit = 0.8f;
         speed = 5f;
         rockCount = 0;
     }

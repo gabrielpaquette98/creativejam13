@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 4115024461942119794}
   - component: {fileID: 4115024461942119797}
   m_Layer: 0
-  m_Name: Rock
+  m_Name: RockOnFloor
   m_TagString: Rock
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.7
 --- !u!50 &4115024461942119794
 Rigidbody2D:
   serializedVersion: 4

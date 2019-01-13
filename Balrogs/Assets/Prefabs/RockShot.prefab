@@ -16,8 +16,8 @@ GameObject:
   - component: {fileID: 3619436754798676145}
   - component: {fileID: 3527717307848240772}
   m_Layer: 0
-  m_Name: Rock
-  m_TagString: Untagged
+  m_Name: RockShot
+  m_TagString: RockShot
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
