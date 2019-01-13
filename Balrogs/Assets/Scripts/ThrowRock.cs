@@ -2,21 +2,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ThrowRock : MonoBehaviour
+public class ThrowRock : Poolable
 {
     private Rigidbody2D rigidBody;
     private GameObject player;
     private float speed;
     private float lifeTime;
 
-    void Start()
+    void OnEnable()
     {
         rigidBody = GetComponent<Rigidbody2D>();
         rigidBody.drag = 1;
         player = GameObject.Find("Player");
-        speed = 10f;
+        speed = 15f;
         ShootRock();
         lifeTime = 10f;
+        //Physics2D.IgnoreCollision(player.GetComponent<Collider2D>(), GetComponent<Collider2D>());
     }
 
     private void ShootRock()
@@ -29,10 +30,13 @@ public class ThrowRock : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        if (!(other.gameObject.CompareTag("Player")))
-        {
+        if (!(other.gameObject.CompareTag("Player")) && !(other.gameObject.CompareTag("RockShot"))) {
             gameObject.tag = "Rock";
-            Destroy(gameObject, lifeTime);
+            this.enabled = false;
+        }
+        else
+        {
+            this.GetComponents<Collider2D>()[1].isTrigger = false;
         }
     }
 }
