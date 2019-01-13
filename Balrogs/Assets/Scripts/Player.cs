@@ -98,12 +98,12 @@ public class Player : MonoBehaviour
 
     private void UpdateRockCountUI()
     {
-        rockCountUI.text = "x  " + rockCount;
+        //rockCountUI.text = "x  " + rockCount;
     }
 
     private void UpdateCoinCountUI()
     {
-        coinCountUI.text = "x  " + (coinCount * 100);
+        //coinCountUI.text = "x  " + (coinCount * 100);
     }
 
     private void ThrowRock()
