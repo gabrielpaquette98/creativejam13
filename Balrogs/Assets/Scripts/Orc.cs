@@ -98,6 +98,8 @@ public class Orc : MonoBehaviour
                     //target = hit.collider.transform.position;
                     speed *= 2;
 
+                    Debug.DrawRay(transform.position+dirr.normalized, dirr, Color.red, 0.5f, true);
+                    
                     state = States.CHASING;
                     StopAllCoroutines();
                     target = hit.collider.transform.position;
