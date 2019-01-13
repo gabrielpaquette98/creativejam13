@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public GameObject rock;
-    public Transform throwPoint;
+    //public GameObject rock;
+    //public Transform throwPoint;
     
     const string PoolKey = "RockShot.prefab";
     [SerializeField] GameObject prefab;
@@ -16,8 +16,20 @@ public class Player : MonoBehaviour
     private float vertical;
     private float limit;
     private float speed;
+
+    private int coins_;
+
+    public int Coins
+    {
+        get { return coins_; }
+        set { coins_ = value; }
+    }
+    
     public int rockCount;
     bool hasCollided = false;
+
+    [SerializeField]
+    private Animator anim;
 
     [SerializeField]
     private bool illuminated = false;
@@ -39,12 +51,17 @@ public class Player : MonoBehaviour
             Debug.Log("Pre-populating pool");
         else
             Debug.Log("Pool already configured");
+        
+        //anim = GetComponent<Animator>();
     }
 
     void Update()
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+        
+        anim.SetBool("Iddle", !(horizontal != 0 || vertical != 0));
+        
         ThrowRock();
     }
 

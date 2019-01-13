@@ -7,7 +7,9 @@ using Object = UnityEngine.Object;
 
 public class FloorGenerator : MonoBehaviour
 {
-    static bool firstLevelDone = true;
+    [SerializeField]
+    static bool firstLevelDone = false;
+    
     const int GRID_WIDTH = 25;
     const int GRID_HEIGHT = 14;
     const string SRC_TOP = "Prefabs/Maps/Top/";
@@ -33,20 +35,42 @@ public class FloorGenerator : MonoBehaviour
     GameObject gameGrid;
     List<Vector2Int> occupiedRoomPosition;
     List<Vector2Int> nextNeighboors;
+    
+    public GameObject player;
 
-    void Start()
+    public bool firstTime = true;
+
+    void OnEnable()
     {
-        FloorSize = new Vector2(roomArrayXLength, roomArrayYLength);
-        nextNeighboors = new List<Vector2Int>();
-        occupiedRoomPosition = new List<Vector2Int>();
-        if (nbOfRooms > roomArrayXLength * roomArrayYLength)
-            nbOfRooms = roomArrayXLength * roomArrayYLength;
-        CreateRooms();
-        SetDoorTypes();
-        if (miniMapIsVisible)
-            MiniMapDraw();
-        if (terrainGenerationIsEnabled)
-            InitializePlayableRooms();
+
+        if (firstTime)
+        {
+            FloorSize = new Vector2(roomArrayXLength, roomArrayYLength);
+            nextNeighboors = new List<Vector2Int>();
+            occupiedRoomPosition = new List<Vector2Int>();
+            if (nbOfRooms > roomArrayXLength * roomArrayYLength)
+                nbOfRooms = roomArrayXLength * roomArrayYLength;
+            CreateRooms();
+            SetDoorTypes();
+            if (miniMapIsVisible)
+                MiniMapDraw();
+            if (terrainGenerationIsEnabled)
+                InitializePlayableRooms();
+
+        }
+        
+        GameObject player = GameObject.FindGameObjectWithTag("Player");
+        GameObject spawn = GameObject.FindGameObjectWithTag("Spawn") as GameObject;
+        if(spawn==null)
+            spawn = GameObject.FindGameObjectWithTag("Entry") as GameObject;
+        if ( player == null)
+        {
+            player = Instantiate(this.player);
+        }
+
+        player.transform.position = spawn.transform.position;
+        firstTime = false;
+
     }
 
     void InitializePlayableRooms()
@@ -69,6 +93,7 @@ public class FloorGenerator : MonoBehaviour
                 }
             }
         }
+        
     }
 
     private void AddRoomRight(Room room, Vector2 gridRoomPosition)
@@ -151,6 +176,12 @@ public class FloorGenerator : MonoBehaviour
                 prefabName += "Door";
         }
         GameObject roomTop = Instantiate(Resources.Load(SRC_TOP + prefabName), gridRoomPosition, Quaternion.identity) as GameObject;
+        /*if (room.CurrentRoomType == RoomType.SPAWN_ROOM)
+        {
+            GameObject spawn = GameObject.FindGameObjectWithTag("Spawn") as GameObject;
+            Instantiate(player, spawn.transform.position, spawn.transform.rotation);
+        }*/
+
         roomTop.transform.parent = gameGrid.transform;
     }
     

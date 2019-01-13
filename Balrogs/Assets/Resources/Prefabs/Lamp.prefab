@@ -11,6 +11,8 @@ GameObject:
   - component: {fileID: 1334697836243297697}
   - component: {fileID: 1334697836243297698}
   - component: {fileID: 433583465424653472}
+  - component: {fileID: 3395231775692941538}
+  - component: {fileID: 5644987783938736591}
   m_Layer: 0
   m_Name: Lamp
   m_TagString: Untagged
@@ -100,6 +102,45 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!61 &3395231775692941538
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334697836243297699}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.5, y: 1.3125}
+    newSize: {x: 0.5, y: 1.3125}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.5, y: 1.3125}
+  m_EdgeRadius: 0
+--- !u!114 &5644987783938736591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1334697836243297699}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46de08d6b6a794217b84ae875484bbe1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 1247046635068712079, guid: ae6eb589e68ee4dcfae732eb4ee1fbc7, type: 3}
 --- !u!1 &1334697836763112520
 GameObject:
   m_ObjectHideFlags: 0
