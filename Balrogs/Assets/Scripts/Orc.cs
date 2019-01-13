@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -8,14 +9,14 @@ using Random = UnityEngine.Random;
 public class Orc : MonoBehaviour
 {
     [SerializeField]
-    private GameObject[] path;
+    private List<GameObject> path = new List<GameObject>();
 
-    public GameObject[] Path
+    public List<GameObject> Path
     {
         get { return path; }
         set { path = value; }
     }
-
+    static List<Vector2> pointsTaken = new List<Vector2>();
     
 
     [SerializeField]
@@ -44,10 +45,11 @@ public class Orc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        path = GameObject.FindGameObjectsWithTag("path");
+        //Path = new List<GameObject>();
         //thisPos = transform.position;
-        target = path[index].transform.position;
-    }
+        target = transform.position;
+        StartCoroutine(canGetPath());
+    } 
 
     bool ComparePos()
     {
@@ -199,16 +201,57 @@ public class Orc : MonoBehaviour
             
         }
     }
-    
+
+    IEnumerator canGetPath()
+    {
+        int timer = 0;
+        int max = 3;
+        for(; ; )
+        {
+
+            yield return new WaitForSeconds(1);
+            timer++;
+            if (timer > max)
+            {
+                timer = 0;
+            }
+        }
+    }
+
+    internal void initialisePath(Vector2 spawnPosition)
+    {
+        System.Random randomGenerator = new System.Random();
+        int nbOfPoints = randomGenerator.Next(2, 4);
+        int deltaX;
+        int deltaY;
+        for (int i = 0; i < nbOfPoints; i++)
+        {
+            GameObject dest = new GameObject();
+            do
+            {
+                deltaX = randomGenerator.Next(3, 6);
+                deltaY = randomGenerator.Next(3, 6);
+                dest.transform.position = new Vector2(spawnPosition.x + deltaX, spawnPosition.y + deltaY);
+            } while (pointsTaken.Contains(dest.transform.position));
+            pointsTaken.Add(dest.transform.position);
+            Path.Add(dest);
+        }
+    }
+
 
     // Update is called once per frame
     void Update()
     {
         
-        if (ComparePos() && state == States.PARTOL)
+        if (ComparePos() && state == States.PARTOL && path.Count!=0)
         {
+            
             index++;
-            if (index == path.Length) index = 0;
+
+            Debug.Log(index);
+
+            if (index >= path.Count)
+                index = 0;
             target = path[index].transform.position;
         }
         

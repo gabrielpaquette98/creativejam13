@@ -346,7 +346,7 @@ GameObject:
   - component: {fileID: 62413757}
   m_Layer: 0
   m_Name: GameRules
-  m_TagString: Untagged
+  m_TagString: Rules
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -363,6 +363,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620b95987d8ebf4448b7e3426fb9cef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  initialDifficulty: 2
+  easyRoomCount: 10
+  easyMaxOrcCountPerLevel: 4
+  easyMaxOrcCountPerRoom: 4
+  mediumRoomCount: 15
+  mediumMaxOrcCountPerLevel: 10
+  mediumMaxOrcCountPerRoom: 10
+  hardRoomCount: 20
+  hardMaxOrcCountPerLevel: 20
+  hardMaxOrcCountPerRoom: 3
+  roomGridSize: 8
 --- !u!4 &62413758
 Transform:
   m_ObjectHideFlags: 0
@@ -3247,7 +3258,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9b7f3fa33744145dba670adf864fd61b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  target: {fileID: 8618839912580753505, guid: 70038846190c948beab32a24fe9fedc6, type: 3}
   smoothTime: 0.3
 --- !u!1 &1011514177
 GameObject:
@@ -4701,11 +4712,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1334697836243297699, guid: 77ddeab977d333b43b12ce748b9e1fee,
-        type: 3}
-      propertyPath: m_Name
-      value: Lamp
-      objectReference: {fileID: 0}
     - target: {fileID: 1334697836243297697, guid: 77ddeab977d333b43b12ce748b9e1fee,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4760,6 +4766,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1334697836243297699, guid: 77ddeab977d333b43b12ce748b9e1fee,
+        type: 3}
+      propertyPath: m_Name
+      value: Lamp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77ddeab977d333b43b12ce748b9e1fee, type: 3}
@@ -5325,14 +5336,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b902ca0a369554190ef218d09387ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomArrayXLength: 8
-  roomArrayYLength: 8
-  nbOfRooms: 10
   roomRenderer: {fileID: 796095111498739049, guid: 6668ae5205119984c9ad4ced73a6c1e5,
     type: 3}
   miniMapIsVisible: 0
   terrainGenerationIsEnabled: 1
-  player: {fileID: 8618839912580753508, guid: bf830909b8f80420787a539c845c423b, type: 3}
+  player: {fileID: 8618839912580753508, guid: 70038846190c948beab32a24fe9fedc6, type: 3}
+  ennemyPrefab: {fileID: 8078580986264623022, guid: c07daa1b37f0b4d80942f331447f8aca,
+    type: 3}
   firstTime: 1
 --- !u!1 &1735979884
 GameObject:
@@ -5659,14 +5669,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b902ca0a369554190ef218d09387ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomArrayXLength: 8
-  roomArrayYLength: 8
-  nbOfRooms: 10
   roomRenderer: {fileID: 796095111498739049, guid: 6668ae5205119984c9ad4ced73a6c1e5,
     type: 3}
   miniMapIsVisible: 0
   terrainGenerationIsEnabled: 1
   player: {fileID: 8618839912580753508, guid: 70038846190c948beab32a24fe9fedc6, type: 3}
+  ennemyPrefab: {fileID: 8078580986264623022, guid: c07daa1b37f0b4d80942f331447f8aca,
+    type: 3}
   firstTime: 1
 --- !u!4 &1829813481
 Transform:
@@ -6362,14 +6371,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92b902ca0a369554190ef218d09387ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  roomArrayXLength: 8
-  roomArrayYLength: 8
-  nbOfRooms: 10
   roomRenderer: {fileID: 796095111498739049, guid: 6668ae5205119984c9ad4ced73a6c1e5,
     type: 3}
   miniMapIsVisible: 0
   terrainGenerationIsEnabled: 1
-  player: {fileID: 8618839912580753508, guid: bf830909b8f80420787a539c845c423b, type: 3}
+  player: {fileID: 8618839912580753508, guid: 70038846190c948beab32a24fe9fedc6, type: 3}
+  ennemyPrefab: {fileID: 8078580986264623022, guid: c07daa1b37f0b4d80942f331447f8aca,
+    type: 3}
   firstTime: 1
 --- !u!1 &2083237583
 GameObject:

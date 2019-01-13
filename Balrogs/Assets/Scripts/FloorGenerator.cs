@@ -23,13 +23,16 @@ public class FloorGenerator : MonoBehaviour
 
     System.Random randomGenerator = new System.Random();
 
-    //Modifiy accordingly for difficulty or time purposes
-    [SerializeField] int roomArrayXLength = 8;
-    [SerializeField] int roomArrayYLength = 8;
-    [SerializeField] int nbOfRooms = 10;
+    //Modifiy Rules accordingly for difficulty or time purposes
+    GameRules Rules;
+    int roomArrayXLength;
+    int roomArrayYLength;
+
+    int NbOfRooms => Rules.GetRoomCount();
     [SerializeField] RoomSpriteSelector roomRenderer;
     [SerializeField] bool miniMapIsVisible = false;
     [SerializeField] bool terrainGenerationIsEnabled = true;
+
     public Room[,] Rooms { get; set; }
     Vector2 FloorSize;
     GameObject gameGrid;
@@ -37,19 +40,23 @@ public class FloorGenerator : MonoBehaviour
     List<Vector2Int> nextNeighboors;
     
     public GameObject player;
+    [SerializeField] GameObject ennemyPrefab;
 
     public bool firstTime = true;
+    int numberOfEnnemiesSpawned = 0;
+    int maxNumberOfEnnemies = 0;
 
     void OnEnable()
     {
-
+        Rules = GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>();
+        roomArrayXLength = Rules.GetRoomGridSize();
+        roomArrayYLength = Rules.GetRoomGridSize();
+        
         if (firstTime)
         {
             FloorSize = new Vector2(roomArrayXLength, roomArrayYLength);
             nextNeighboors = new List<Vector2Int>();
             occupiedRoomPosition = new List<Vector2Int>();
-            if (nbOfRooms > roomArrayXLength * roomArrayYLength)
-                nbOfRooms = roomArrayXLength * roomArrayYLength;
             CreateRooms();
             SetDoorTypes();
             if (miniMapIsVisible)
@@ -57,6 +64,7 @@ public class FloorGenerator : MonoBehaviour
             if (terrainGenerationIsEnabled)
                 InitializePlayableRooms();
 
+            SprinkleEnnemiesInLevel();
         }
         
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -94,6 +102,50 @@ public class FloorGenerator : MonoBehaviour
             }
         }
         
+    }
+
+    private void SprinkleEnnemiesInLevel()
+    {
+        Vector2Int roomPosition;
+        maxNumberOfEnnemies = Rules.GetRandomOrcCountPerLevel();
+        List<Vector2Int> roomsToSprinkle = new List<Vector2Int>();
+        foreach (var room in occupiedRoomPosition)
+        {
+            if (Rooms[room.x, room.y] != null && Rooms[room.x, room.y].CurrentRoomType != RoomType.SPAWN_ROOM)
+                roomsToSprinkle.Add(room);
+        }
+        do
+        {
+            
+            roomPosition = roomsToSprinkle[randomGenerator.Next(0, roomsToSprinkle.Count)];
+            SprinkleEnnemiesInRoom(roomPosition);
+            roomsToSprinkle.Remove(roomPosition);
+        } while (numberOfEnnemiesSpawned < maxNumberOfEnnemies && roomsToSprinkle.Count > 0);
+
+    }
+
+    private void SprinkleEnnemiesInRoom(Vector2Int roomPosition)
+    {
+        int amountOfEnnemiesToSpawn = Rules.GetRandomOrcCountPerRoom();
+        if (numberOfEnnemiesSpawned + amountOfEnnemiesToSpawn > maxNumberOfEnnemies)
+        {
+            amountOfEnnemiesToSpawn = maxNumberOfEnnemies - numberOfEnnemiesSpawned;
+        }
+        for (int i = 0; i < amountOfEnnemiesToSpawn; i++)
+        {
+            SpawnEnnemy(roomPosition);
+        }
+    }
+
+    void SpawnEnnemy(Vector2 roomPosition)
+    {
+        Vector2 spawnPosition = new Vector2(roomPosition.x * GRID_WIDTH, roomPosition.y * GRID_HEIGHT);
+        GameObject ennemy = Instantiate(ennemyPrefab, spawnPosition, Quaternion.identity);
+
+        //set path
+        Orc orc = ennemy.GetComponent<Orc>();
+        orc.initialisePath(spawnPosition);
+        numberOfEnnemiesSpawned++;
     }
 
     private void AddRoomRight(Room room, Vector2 gridRoomPosition)
@@ -250,9 +302,9 @@ public class FloorGenerator : MonoBehaviour
         occupiedRoomPosition.Add(currentRoomPosition);
         
 
-        for (int i = 0; i < nbOfRooms - 1; i++)
+        for (int i = 0; i < NbOfRooms - 1; i++)
         {
-            if (i > nbOfRooms - nbOfRooms/5)
+            if (i > NbOfRooms - NbOfRooms/5)
             {
                 currentRoomPosition = ChooseNextRoomRandomly();
                 CreateSingleRoom(currentRoomPosition, RoomType.FLOOR_NORMAL_ROOM);
@@ -260,7 +312,7 @@ public class FloorGenerator : MonoBehaviour
                 nextNeighboors.Remove(currentRoomPosition);
                 AddToSelectableNeighboors(Rooms[currentRoomPosition.x, currentRoomPosition.y].GetNeighboors());
             }
-            else if (i == nbOfRooms - nbOfRooms / 5 )
+            else if (i == NbOfRooms - NbOfRooms / 5 )
             {
                 Vector2Int topPosition; 
                 do
