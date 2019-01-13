@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
@@ -12,9 +13,9 @@ public class Orc : MonoBehaviour
     public AudioClip chaseSound;
     
     [SerializeField]
-    private GameObject[] path;
+    private List<GameObject> path = new List<GameObject>();
 
-    public GameObject[] Path
+    public List<GameObject> Path
     {
         get { return path; }
         set { path = value; }
@@ -50,10 +51,10 @@ public class Orc : MonoBehaviour
     {
         StartCoroutine(patrolSound());
         path = GameObject.FindGameObjectsWithTag("path");
+        //Path = new List<GameObject>();
         //thisPos = transform.position;
-        target = path[index].transform.position;
-        
-    }
+        target = transform.position;
+    } 
 
     bool ComparePos()
     {
@@ -219,10 +220,15 @@ public class Orc : MonoBehaviour
     void Update()
     {
         
-        if (ComparePos() && state == States.PARTOL)
+        if (ComparePos() && state == States.PARTOL && path.Count!=0)
         {
+            
             index++;
-            if (index == path.Length) index = 0;
+
+            Debug.Log(index);
+
+            if (index >= path.Count)
+                index = 0;
             target = path[index].transform.position;
         }
         
