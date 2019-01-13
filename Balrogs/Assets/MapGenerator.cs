@@ -23,7 +23,7 @@ public class MapGenerator : MonoBehaviour
 
     public void NextFloor()
     {
-        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered++;
+        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered += 5;
         ChooseNewDifficulty();
         currObj.active = false;
         i++;
@@ -39,7 +39,7 @@ public class MapGenerator : MonoBehaviour
 
     public void BackToStart()
     {
-        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered--;
+        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered -= 2;
         ChooseNewDifficulty();
         currObj.active = false;
         i = 0;
