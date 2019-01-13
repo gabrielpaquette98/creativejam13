@@ -54,7 +54,7 @@ public class Orc : MonoBehaviour
         //Path = new List<GameObject>();
         //thisPos = transform.position;
         target = transform.position;
-        StartCoroutine(canGetPath());
+        //StartCoroutine(canGetPath());
     } 
 
     bool ComparePos()
@@ -123,7 +123,7 @@ public class Orc : MonoBehaviour
     {
         if (hit.collider != null)
         {
-            Debug.Log(hit.collider.tag);
+            //Debug.Log(hit.collider.tag);
             if (hit.collider.tag.Equals("Player"))
             {
                 if (hit.collider.GetComponent<Player>().Illuminated)
@@ -134,6 +134,7 @@ public class Orc : MonoBehaviour
                     Debug.DrawRay(transform.position+dirr.normalized, dirr, Color.red, 0.5f, true);
                     
                     state = States.CHASING;
+                    GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered--;
                     StopAllCoroutines();
                     target = hit.collider.transform.position;
                     sound.PlayOneShot(chaseSound);
@@ -146,7 +147,7 @@ public class Orc : MonoBehaviour
 
     private void Chasing()
     {
-        Debug.Log("CHASE");
+        //Debug.Log("CHASE");
             Vector3 dirr = target - transform.position;
 
             GetComponent<Rigidbody2D>().velocity = dirr.normalized * speed;
@@ -177,12 +178,13 @@ public class Orc : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D other)
     {
-        Debug.Log(other.gameObject.tag);
+        //Debug.Log(other.gameObject.tag);
         if (other.gameObject.CompareTag("Rock"))
         {
             
             StopAllCoroutines();
             state = States.STUN;
+            GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered += 2;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
             anim.SetBool("Stun", true);
             StartCoroutine(Stun());
@@ -206,7 +208,7 @@ public class Orc : MonoBehaviour
     {
         Vector3 dirr = transform.position;
         dirr.x += 30*transform.localScale.x;
-        Debug.Log(dirr + "\n" + transform.position);
+        //Debug.Log(dirr + "\n" + transform.position);
         
         LayerMask layerMask = (LayerMask.GetMask("Player"));
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirr,Mathf.Infinity, 1 <<LayerMask.NameToLayer("Player"));
@@ -228,6 +230,7 @@ public class Orc : MonoBehaviour
             if (timer > max)
             {
                 timer = 0;
+                initialisePath(transform.position);
             }
         }
     }
@@ -262,7 +265,7 @@ public class Orc : MonoBehaviour
             
             index++;
 
-            Debug.Log(index);
+            //Debug.Log(index);
 
             if (index >= path.Count)
                 index = 0;
@@ -287,7 +290,7 @@ public class Orc : MonoBehaviour
        //RaycastHit2D hit = Physics2D.Raycast(transform.position+dirr.normalized, dirr);
        
 
-        Debug.Log(state);
+        //Debug.Log(state);
         
 
 

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -22,6 +23,8 @@ public class MapGenerator : MonoBehaviour
 
     public void NextFloor()
     {
+        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered += 5;
+        ChooseNewDifficulty();
         currObj.active = false;
         i++;
         currObj = children[i].gameObject;
@@ -29,9 +32,15 @@ public class MapGenerator : MonoBehaviour
         
     }
 
+    void ChooseNewDifficulty()
+    {
+        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().DifficultyUpdate();
+    }
+
     public void BackToStart()
     {
-        Debug.Log("Start");
+        GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered -= 2;
+        ChooseNewDifficulty();
         currObj.active = false;
         i = 0;
         currObj = children[0].gameObject;
