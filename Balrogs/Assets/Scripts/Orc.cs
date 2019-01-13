@@ -10,6 +10,14 @@ public class Orc : MonoBehaviour
     [SerializeField]
     private GameObject[] path;
 
+    public GameObject[] Path
+    {
+        get { return path; }
+        set { path = value; }
+    }
+
+    
+
     [SerializeField]
     private Vector3 target;
 
