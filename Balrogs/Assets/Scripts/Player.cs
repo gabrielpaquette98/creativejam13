@@ -10,7 +10,9 @@ public class Player : MonoBehaviour
     public GameObject rock;
     public Transform throwPoint;
     public Text rockCountUI;
-    
+    public Text coinCountUI;
+
+
     const string PoolKey = "RockShot.prefab";
     [SerializeField] GameObject prefab;
     List<Poolable> instances = new List<Poolable>();
@@ -21,21 +23,20 @@ public class Player : MonoBehaviour
     private float limit;
     private float speed;
     private GameObject light;
+    [SerializeField]
+    private int rockCount;
+    private bool hasCollided = false;
 
     [SerializeField]
     private AudioSource running;
-
-    private int coins_;
+    private int coinCount;
 
     public int Coins
     {
-        get { return coins_; }
-        set { coins_ = value; }
+        get { return coinCount; }
+        set { coinCount = value; }
     }
-    
-    public int rockCount;
-    bool hasCollided = false;
-
+  
     [SerializeField]
     private Animator anim;
 
@@ -54,9 +55,11 @@ public class Player : MonoBehaviour
         limit = 0.8f;
         speed = 5f;
         rockCount = 0;
+        coinCount = 0;
         UpdateRockCountUI();
 
         light = transform.GetChild(0).gameObject;
+        UpdateCoinCountUI();
         
         if (GameObjectPoolController.AddEntry(PoolKey, prefab, 10, 15))
             Debug.Log("Pre-populating pool");
@@ -124,6 +127,12 @@ public class Player : MonoBehaviour
     {
         //rockCountUI.text = "x  " + rockCount;
     }
+
+    private void UpdateCoinCountUI()
+    {
+        coinCountUI.text = "x  " + (coinCount * 100);
+    }
+
     private void ThrowRock()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && rockCount != 0)
