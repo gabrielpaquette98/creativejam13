@@ -63,8 +63,9 @@ public class FloorGenerator : MonoBehaviour
                 MiniMapDraw();
             if (terrainGenerationIsEnabled)
                 InitializePlayableRooms();
-
-            SprinkleEnnemiesInLevel();
+            if (Rules.GetEnnemiesGeneration())
+                SprinkleEnnemiesInLevel();
+            Rules.pointsWhenStartingAFloor = Rules.PointsGathered;
         }
         
         GameObject player = GameObject.FindGameObjectWithTag("Player");
@@ -240,7 +241,7 @@ public class FloorGenerator : MonoBehaviour
     private string ChooseQuarterDifficulty()
     {
         int randomSelector = randomGenerator.Next(0, 3);
-        Debug.Log(randomSelector);
+
         switch (GameRules.Difficulty)
         {
             case GameDifficulty.LOW:

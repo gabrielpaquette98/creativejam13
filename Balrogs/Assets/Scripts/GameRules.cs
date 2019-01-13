@@ -11,6 +11,8 @@ public class GameRules : MonoBehaviour
 {
     System.Random randomGenerator = new System.Random();
     public static GameDifficulty Difficulty { get; set; }
+    public int PointsGathered { get => pointsGathered; set => pointsGathered = value; }
+
     [SerializeField] private GameDifficulty initialDifficulty = GameDifficulty.LOW;
     //[SerializeField] int initialDifficulty = 1;
     [SerializeField] int easyRoomCount = 7;
@@ -25,10 +27,13 @@ public class GameRules : MonoBehaviour
     [SerializeField] int hardMaxOrcCountPerLevel = 20;
     [SerializeField] int hardMaxOrcCountPerRoom = 3;
 
-
+    [SerializeField] bool ennemiesGeneration = true;
 
     [SerializeField] int roomGridSize = 8;
     const int DEFAULT_ROOM_COUNT = 10;
+
+    private int pointsGathered = 0;
+    public int pointsWhenStartingAFloor = 0;
 
     void Start()
     {
@@ -86,5 +91,33 @@ public class GameRules : MonoBehaviour
     {
         return roomGridSize;
     }
-    
+    public bool GetEnnemiesGeneration()
+    {
+        return ennemiesGeneration;
+    }
+    private void LateUpdate()
+    {
+        Debug.Log(Difficulty);
+    }
+
+    public void DifficultyUpdate()
+    {
+        switch (Difficulty)
+        {
+            case GameDifficulty.LOW:
+                if (pointsGathered > pointsWhenStartingAFloor)
+                    Difficulty = GameDifficulty.MEDIUM;
+                break;
+            case GameDifficulty.MEDIUM:
+                if (pointsGathered > pointsWhenStartingAFloor)
+                    Difficulty = GameDifficulty.HIGH;
+                else if (pointsGathered < pointsWhenStartingAFloor)
+                    Difficulty = GameDifficulty.LOW;
+                break;
+            case GameDifficulty.HIGH:
+                if (pointsGathered < pointsWhenStartingAFloor)
+                    Difficulty = GameDifficulty.MEDIUM;
+                break;
+        }
+    }
 }

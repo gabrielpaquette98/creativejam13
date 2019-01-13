@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 620b95987d8ebf4448b7e3426fb9cef6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialDifficulty: 2
+  initialDifficulty: 0
   easyRoomCount: 10
   easyMaxOrcCountPerLevel: 4
   easyMaxOrcCountPerRoom: 4
@@ -4712,6 +4712,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1334697836243297699, guid: 77ddeab977d333b43b12ce748b9e1fee,
+        type: 3}
+      propertyPath: m_Name
+      value: Lamp
+      objectReference: {fileID: 0}
     - target: {fileID: 1334697836243297697, guid: 77ddeab977d333b43b12ce748b9e1fee,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -4766,11 +4771,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1334697836243297699, guid: 77ddeab977d333b43b12ce748b9e1fee,
-        type: 3}
-      propertyPath: m_Name
-      value: Lamp
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 77ddeab977d333b43b12ce748b9e1fee, type: 3}
