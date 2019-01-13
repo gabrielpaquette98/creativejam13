@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 using UnityEngine.UI;
+using Light = UnityEngine.Light;
 
 public class Player : MonoBehaviour
 {
@@ -18,6 +20,10 @@ public class Player : MonoBehaviour
     private float vertical;
     private float limit;
     private float speed;
+    private GameObject light;
+
+    [SerializeField]
+    private AudioSource running;
 
     private int coins_;
 
@@ -49,12 +55,16 @@ public class Player : MonoBehaviour
         speed = 5f;
         rockCount = 0;
         UpdateRockCountUI();
+
+        light = transform.GetChild(0).gameObject;
         
         if (GameObjectPoolController.AddEntry(PoolKey, prefab, 10, 15))
             Debug.Log("Pre-populating pool");
         else
             Debug.Log("Pool already configured");
-        
+
+        //running = GetComponent<AudioSource>();
+
         //anim = GetComponent<Animator>();
     }
 
@@ -62,8 +72,26 @@ public class Player : MonoBehaviour
     {
         horizontal = Input.GetAxisRaw("Horizontal");
         vertical = Input.GetAxisRaw("Vertical");
+        bool isRunning = !(horizontal != 0 || vertical != 0);
         
-        anim.SetBool("Iddle", !(horizontal != 0 || vertical != 0));
+        anim.SetBool("Iddle", isRunning);
+
+        running.mute = isRunning;
+
+        if (Input.GetKey(KeyCode.LeftShift))
+        {
+            illuminated = true;
+            light.GetComponent<UnityEngine.Light>().intensity = 1.5f;
+            light.GetComponent<UnityEngine.Light>().range = 250;
+
+        }
+        else
+        {
+            illuminated = false;
+            light.GetComponent<UnityEngine.Light>().intensity = 1f;
+            light.GetComponent<UnityEngine.Light>().range = 10;
+            
+        }
         
         ThrowRock();
     }
@@ -94,7 +122,7 @@ public class Player : MonoBehaviour
 
     private void UpdateRockCountUI()
     {
-        rockCountUI.text = "x  " + rockCount;
+        //rockCountUI.text = "x  " + rockCount;
     }
     private void ThrowRock()
     {

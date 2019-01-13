@@ -7,6 +7,10 @@ using Random = UnityEngine.Random;
 
 public class Orc : MonoBehaviour
 {
+
+    public AudioSource sound;
+    public AudioClip chaseSound;
+    
     [SerializeField]
     private GameObject[] path;
 
@@ -44,9 +48,11 @@ public class Orc : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        StartCoroutine(patrolSound());
         path = GameObject.FindGameObjectsWithTag("path");
         //thisPos = transform.position;
         target = path[index].transform.position;
+        
     }
 
     bool ComparePos()
@@ -55,11 +61,6 @@ public class Orc : MonoBehaviour
                 transform.position.y < target.y + EPSILON && transform.position.y > target.y - EPSILON);
     }
     
-    bool ComparePos(Vector3 target)
-    {
-        return (transform.position.x < target.x + EPSILON && transform.position.x > target.x - EPSILON &&
-                transform.position.y < target.y + EPSILON && transform.position.y > target.y - EPSILON);
-    }
 
     IEnumerator lookForPlayer()
     {
@@ -72,6 +73,22 @@ public class Orc : MonoBehaviour
         }
 
         state = States.PARTOL;
+        StartCoroutine(patrolSound());
+    }
+
+    IEnumerator patrolSound()
+    {
+        Debug.Log("Start");
+        while (state == States.PARTOL)
+        {
+            float time = Random.Range(4, 10);
+            sound.mute = !GetComponent<SpriteRenderer>().isVisible;
+            sound.Play();
+            
+            Debug.Log("Sound");
+            yield return new WaitForSeconds(time);
+            
+        }
     }
 
     private void patrol()
@@ -86,8 +103,22 @@ public class Orc : MonoBehaviour
         RaycastHit2D hit = Physics2D.Raycast(transform.position, dirr,Mathf.Infinity, 1 <<LayerMask.NameToLayer("Player"));
         Debug.DrawRay(transform.position+dirr.normalized, dirr, Color.white, 0.5f, true);
 
-
+        playerFound(hit, dirr);
+        
         //If something was hit, the RaycastHit2D.collider will not be null.
+        
+        if (GetComponent<Rigidbody2D>().velocity.x < 0)
+        {
+            transform.localScale = new Vector3(1,1,1);
+        }
+        else
+        {
+            transform.localScale = new Vector3(-1,1,1);
+        }
+    }
+
+    private void playerFound(RaycastHit2D hit, Vector3 dirr)
+    {
         if (hit.collider != null)
         {
             Debug.Log(hit.collider.tag);
@@ -103,19 +134,12 @@ public class Orc : MonoBehaviour
                     state = States.CHASING;
                     StopAllCoroutines();
                     target = hit.collider.transform.position;
+                    sound.PlayOneShot(chaseSound);
                 }
 
             }
             
         } 
-        if (GetComponent<Rigidbody2D>().velocity.x < 0)
-        {
-            transform.localScale = new Vector3(1,1,1);
-        }
-        else
-        {
-            transform.localScale = new Vector3(-1,1,1);
-        }
     }
 
     private void Chasing()
@@ -160,6 +184,9 @@ public class Orc : MonoBehaviour
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
             anim.SetBool("Stun", true);
             StartCoroutine(Stun());
+        }else if (other.gameObject.CompareTag("Player"))
+        {
+            GameObject.FindGameObjectWithTag("MapGenerator").GetComponent<MapGenerator>().BackToStart();
         }
     }
 
@@ -168,6 +195,7 @@ public class Orc : MonoBehaviour
         yield return new WaitForSeconds(2);
         anim.SetBool("Stun", false);
         state = States.LOOKING;
+        StopAllCoroutines();
         StartCoroutine(lookForPlayer());
     }
 
@@ -183,21 +211,7 @@ public class Orc : MonoBehaviour
         Debug.DrawRay(transform.position, dirr, Color.white, 0.5f, true);
 
         //If something was hit, the RaycastHit2D.collider will not be null.
-        if (hit.collider != null)
-        {
-            Debug.Log(hit.collider.tag);
-            if (hit.collider.tag.Equals("Player"))
-            {
-                if (hit.collider.GetComponent<Player>().Illuminated)
-                {
-                    speed *= 2;
-                    state = States.CHASING;
-                    StopAllCoroutines();
-                    target = hit.collider.transform.position;
-                }
-            }
-            
-        }
+        playerFound(hit, dirr);
     }
     
 

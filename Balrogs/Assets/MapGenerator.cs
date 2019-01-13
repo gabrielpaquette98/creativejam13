@@ -31,6 +31,7 @@ public class MapGenerator : MonoBehaviour
 
     public void BackToStart()
     {
+        Debug.Log("Start");
         currObj.active = false;
         i = 0;
         currObj = children[0].gameObject;

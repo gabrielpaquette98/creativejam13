@@ -16,9 +16,17 @@ public class Coins : Poolable
         if (other.gameObject.tag.Equals("Player"))
         {
             other.gameObject.GetComponent<Player>().Coins++;
-            gameObject.active = false;
+            GetComponent<AudioSource>().Play();
+            StartCoroutine(disableCoin());
+
 
         }
+    }
+
+    IEnumerator disableCoin()
+    {
+        yield return new WaitForSeconds(0.5f);
+        gameObject.active = false;
     }
 
     // Update is called once per frame
