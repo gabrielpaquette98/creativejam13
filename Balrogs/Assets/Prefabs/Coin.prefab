@@ -71,12 +71,12 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 3
-  m_Sprite: {fileID: 21300000, guid: f74f3d42abbad427389aeee895f298e9, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 159f27828244943ca9d0aad63043280a, type: 3}
   m_Color: {r: 0.8018868, g: 0.6006571, b: 0.13238695, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 1, y: 1}
+  m_Size: {x: 0.32, y: 0.32}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -91,10 +91,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1247046635068712079}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5dcad7b563d4041c399d1f8de843143f, type: 3}
+  m_Script: {fileID: 11500000, guid: 9374d20b5516544a98b21a8d91376e64, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  key: Coin.Prefab
+  key: 
   isPooled: 0
 --- !u!58 &1247046635068712066
 CircleCollider2D:
