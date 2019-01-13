@@ -373,7 +373,9 @@ MonoBehaviour:
   hardRoomCount: 20
   hardMaxOrcCountPerLevel: 20
   hardMaxOrcCountPerRoom: 3
+  ennemiesGeneration: 0
   roomGridSize: 8
+  pointsWhenStartingAFloor: 0
 --- !u!4 &62413758
 Transform:
   m_ObjectHideFlags: 0

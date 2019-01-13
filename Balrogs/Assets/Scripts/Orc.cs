@@ -103,6 +103,7 @@ public class Orc : MonoBehaviour
                     Debug.DrawRay(transform.position+dirr.normalized, dirr, Color.red, 0.5f, true);
                     
                     state = States.CHASING;
+                    GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered--;
                     StopAllCoroutines();
                     target = hit.collider.transform.position;
                 }
@@ -159,6 +160,7 @@ public class Orc : MonoBehaviour
             
             StopAllCoroutines();
             state = States.STUN;
+            GameObject.FindGameObjectWithTag("Rules").GetComponent<GameRules>().PointsGathered += 2;
             GetComponent<Rigidbody2D>().velocity = new Vector2(0,0);
             anim.SetBool("Stun", true);
             StartCoroutine(Stun());
