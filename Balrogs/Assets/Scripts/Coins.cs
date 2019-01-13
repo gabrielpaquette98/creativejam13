@@ -16,8 +16,7 @@ public class Coins : Poolable
         if (other.gameObject.tag.Equals("Player"))
         {
             other.gameObject.GetComponent<Player>().Coins++;
-            gameObject.active = false;
-
+            gameObject.SetActive(false);
         }
     }
 

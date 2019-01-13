@@ -8,6 +8,8 @@ public class SceneController : MonoBehaviour
 {
     public Image blackImage;
     public Animator animator;
+    public GameObject pausePanel;
+    public static bool isPaused;
 
     public void ExitGame()
     {
@@ -24,5 +26,15 @@ public class SceneController : MonoBehaviour
         animator.SetBool("Fade", true);
         yield return new WaitUntil(() => blackImage.color.a == 1);
         SceneManager.LoadScene(sceneName);
+    }
+
+    public void DisplayPausePanel()
+    {
+        pausePanel.SetActive(true);
+    }
+
+    public void ClosePausePanel()
+    {
+        pausePanel.SetActive(false);
     }
 }
