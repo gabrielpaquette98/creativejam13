@@ -144,12 +144,7 @@ public class FloorGenerator : MonoBehaviour
 
         //set path
         Orc orc = ennemy.GetComponent<Orc>();
-        GameObject pointA = new GameObject();
-        pointA.transform.position = spawnPosition;
-        orc.Path.Add(pointA);
-        GameObject pointB = new GameObject();
-        pointB.transform.position = new Vector2(spawnPosition.x + 4, spawnPosition.y);
-        orc.Path.Add(pointB);
+        orc.initialisePath(spawnPosition);
         numberOfEnnemiesSpawned++;
     }
 
